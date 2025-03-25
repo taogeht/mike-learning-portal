@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Teacher Portal for the Student Learning Portal. Manage classes, students, and vocabulary lists to enhance student learning.">
+  <title>Teacher Portal - Student Learning Portal</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/teacher.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/teacher.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">Teacher Portal</div>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="#" id="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="alert-container"></div>
+      
+      <!-- Dashboard Overview -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h1 class="card-title">Teacher Dashboard</h1>
+          <button id="add-class-btn" class="btn">Add New Class</button>
+        </div>
+        <div class="dashboard-grid">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">Total Classes</div>
+            </div>
+            <div class="dashboard-card-count" id="total-classes">0</div>
+            <div class="dashboard-card-footer">
+              <a href="#" class="btn btn-secondary" id="view-all-classes">View All Classes</a>
+            </div>
+          </div>
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">Total Students</div>
+            </div>
+            <div class="dashboard-card-count" id="total-students">0</div>
+            <div class="dashboard-card-footer">
+              <a href="#" class="btn btn-secondary" id="view-all-students">View All Students</a>
+            </div>
+          </div>
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <div class="dashboard-card-title">Vocabulary Words</div>
+            </div>
+            <div class="dashboard-card-count" id="total-vocabulary">0</div>
+            <div class="dashboard-card-footer">
+              <a href="#" class="btn btn-secondary" id="view-all-vocabulary">View All Vocabulary</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Classes Section -->
+      <div class="card mb-3" id="classes-section">
+        <div class="card-header">
+          <h2 class="card-title">My Classes</h2>
+        </div>
+        <div class="class-list" id="class-list">
+          <!-- Class cards will be dynamically added here -->
+          <div class="text-center" id="no-classes-message">
+            <p>You don't have any classes yet. Click "Add New Class" to create your first class.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Class Detail Section (hidden by default) -->
+      <div class="card mb-3 hidden" id="class-detail-section">
+        <div class="card-header">
+          <h2 class="card-title" id="class-detail-title">Class Name</h2>
+          <div>
+            <button class="btn btn-secondary" id="back-to-classes-btn">Back to Classes</button>
+            <button class="btn" id="edit-class-btn">Edit Class</button>
+          </div>
+        </div>
+        
+        <div class="tabs">
+          <div class="tab active" data-tab="students">Students</div>
+          <div class="tab" data-tab="vocabulary">Vocabulary Lists</div>
+          <div class="tab" data-tab="results">Student Results</div>
+          <div class="tab" data-tab="qrcode">QR Code</div>
+        </div>
+        
+        <!-- Students Tab -->
+        <div class="tab-content active" id="students-tab">
+          <div class="card-header">
+            <h3>Students</h3>
+            <div>
+              <button class="btn" id="add-student-btn">Add Student</button>
+              <button class="btn btn-secondary" id="import-students-btn">Import Students (CSV)</button>
+            </div>
+          </div>
+          
+          <table id="students-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="students-list">
+              <!-- Student rows will be dynamically added here -->
+            </tbody>
+          </table>
+          
+          <div class="text-center hidden" id="no-students-message">
+            <p>No students in this class yet. Add students using the buttons above.</p>
+          </div>
+        </div>
+        
+        <!-- Vocabulary Tab -->
+        <div class="tab-content" id="vocabulary-tab">
+          <div class="card-header">
+            <h3>Vocabulary Lists</h3>
+            <div>
+              <button class="btn" id="add-vocabulary-list-btn">Add Vocabulary List</button>
+            </div>
+          </div>
+          
+          <div id="vocabulary-lists-container">
+            <!-- Vocabulary lists will be dynamically added here -->
+          </div>
+          
+          <div class="text-center hidden" id="no-vocabulary-lists-message">
+            <p>No vocabulary lists for this class yet. Create a new list using the button above.</p>
+          </div>
+        </div>
+        
+        <!-- Student Results Tab -->
+        <div class="tab-content" id="results-tab">
+          <div class="card-header">
+            <h3>Student Activity Results</h3>
+            <div>
+              <button class="btn btn-secondary" id="export-results-btn">Export Results (CSV)</button>
+            </div>
+          </div>
+          
+          <div class="results-filters">
+            <div class="form-group">
+              <label for="student-filter">Student</label>
+              <select id="student-filter">
+                <option value="all">All Students</option>
+                <!-- Students will be dynamically added here -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="activity-filter">Activity Type</label>
+              <select id="activity-filter">
+                <option value="all">All Activities</option>
+                <option value="matching_game">Matching Game</option>
+                <option value="picture_quiz">Picture Quiz</option>
+                <option value="spelling">Spelling</option>
+                <option value="bubble_pop">Bubble Pop</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="result-filter">Result</label>
+              <select id="result-filter">
+                <option value="all">All Results</option>
+                <option value="correct">Correct Only</option>
+                <option value="incorrect">Incorrect Only</option>
+              </select>
+            </div>
+            <button class="btn" id="apply-filters-btn">Apply Filters</button>
+          </div>
+          
+          <div class="results-summary">
+            <div class="summary-card">
+              <div class="summary-title">Total Activities</div>
+              <div class="summary-value" id="total-activities">0</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-title">Correct Answers</div>
+              <div class="summary-value" id="correct-answers">0</div>
+            </div>
+            <div class="summary-value" id="success-rate">0%</div>
+          </div>
+          
+          <div id="student-results-container">
+            <!-- Student results will be grouped and displayed here -->
+          </div>
+          
+          <div class="text-center hidden" id="no-results-message">
+            <p>No activity results for this class yet. Students need to complete activities to generate results.</p>
+          </div>
+        </div>
+        
+        <!-- QR Code Tab -->
+        <div class="tab-content" id="qrcode-tab">
+          <div class="card-header">
+            <h3>Class QR Code</h3>
+            <div>
+              <button class="btn btn-secondary" id="download-qrcode-btn">Download QR Code</button>
+            </div>
+          </div>
+          
+          <div class="qrcode-container text-center">
+            <p>Students can scan this QR code to access your class directly:</p>
+            <div id="qrcode"></div>
+            <p class="class-url mt-3" id="class-url"></p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Vocabulary List Detail Section (hidden by default) -->
+      <div class="card mb-3 hidden" id="vocabulary-list-detail-section">
+        <div class="card-header">
+          <h2 class="card-title" id="vocabulary-list-detail-title">Vocabulary List Name</h2>
+          <div>
+            <button class="btn btn-secondary" id="back-to-vocabulary-lists-btn">Back to Lists</button>
+            <button class="btn" id="edit-vocabulary-list-btn">Edit List</button>
+          </div>
+        </div>
+        
+        <div class="card-header">
+          <h3>Words</h3>
+          <div>
+            <button class="btn" id="add-vocabulary-word-btn"><i class="fas fa-plus"></i> Add Word</button>
+          </div>
+        </div>
+        
+        <div id="vocabulary-words-container">
+          <!-- Vocabulary words will be dynamically added here -->
+        </div>
+        
+        <div class="text-center hidden" id="no-vocabulary-words-message">
+          <p>No words in this list yet. Add words using the buttons above.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Student Learning Portal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Add Class Modal -->
+  <div id="add-class-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add New Class</h2>
+      <form id="add-class-form">
+        <div class="form-group">
+          <label for="class-name">Class Name</label>
+          <input type="text" id="class-name" name="class-name" required>
+        </div>
+        <div class="form-group">
+          <label for="class-description">Description</label>
+          <textarea id="class-description" name="class-description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn">Create Class</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Student Modal -->
+  <div id="add-student-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add Student</h2>
+      <form id="add-student-form">
+        <div class="form-group">
+          <label for="student-name">Student Name</label>
+          <input type="text" id="student-name" name="student-name" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn">Add Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Import Students Modal -->
+  <div id="import-students-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Import Students from CSV</h2>
+      <p>Upload a CSV file with student information. The file should have a column for student names.</p>
+      <div class="file-upload-container" id="students-upload-container">
+        <p>Drag and drop your CSV file here or click to browse</p>
+        <input type="file" id="students-csv-upload" class="file-upload-input" accept=".csv">
+      </div>
+      <div class="form-group text-center">
+        <button id="import-students-submit-btn" class="btn" disabled>Import Students</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Vocabulary List Modal -->
+  <div id="add-vocabulary-list-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add Vocabulary List</h2>
+      <form id="add-vocabulary-list-form">
+        <div class="form-group">
+          <label for="vocabulary-list-name">List Name</label>
+          <input type="text" id="vocabulary-list-name" name="vocabulary-list-name" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn">Create List</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Vocabulary Word Modal -->
+  <div id="add-vocabulary-word-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add Vocabulary Word</h2>
+      <form id="add-vocabulary-word-form">
+        <div class="form-group">
+          <label for="vocabulary-word">Word</label>
+          <input type="text" id="vocabulary-word" name="vocabulary-word" required>
+        </div>
+        <div class="form-group">
+          <label for="vocabulary-definition">Definition (Optional)</label>
+          <textarea id="vocabulary-definition" name="vocabulary-definition" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="vocabulary-sample-sentence">Sample Sentence (Optional)</label>
+          <textarea id="vocabulary-sample-sentence" name="vocabulary-sample-sentence" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="vocabulary-image-upload">Image (Optional)</label>
+          <div class="image-upload-container">
+            <input type="file" id="vocabulary-image-upload" name="vocabulary-image-upload" accept="image/*">
+            <div id="vocabulary-image-preview" class="image-preview hidden">
+              <img id="vocabulary-preview-img" src="#" alt="Preview">
+              <button type="button" id="remove-image-btn" class="btn btn-small btn-danger">Remove</button>
+            </div>
+            <p class="help-text">Images will be automatically resized. Max file size: 5MB.</p>
+          </div>
+          <input type="hidden" id="vocabulary-image" name="vocabulary-image">
+        </div>
+        <div class="form-group">
+          <label for="vocabulary-chinese">Chinese Translation (Optional)</label>
+          <input type="text" id="vocabulary-chinese" name="vocabulary-chinese">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn">Add Word</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Student Results Modal -->
+  <div id="student-results-modal" class="modal">
+    <!-- ... existing modal content ... -->
+  </div>
+
+  <script>
+    console.log('Page loaded, about to load scripts');
+    
+    // Global error handler
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.error('Global error caught:', message);
+      console.error('Source:', source);
+      console.error('Line:', lineno, 'Column:', colno);
+      console.error('Error object:', error);
+      alert('JavaScript error: ' + message + ' at line ' + lineno);
+      return false;
+    };
+  </script>
+</body>
+</html> 

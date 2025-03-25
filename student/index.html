@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Portal for the Student Learning Portal. Access your class vocabulary and learning materials.">
+  <title>Student Portal - Student Learning Portal</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/student.css">
+  <link rel="stylesheet" href="../css/spelling-activities.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">Student Portal</div>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="alert-container"></div>
+      
+      <!-- Class Not Found Section -->
+      <div id="class-not-found" class="card text-center hidden">
+        <div class="card-header">
+          <h1 class="card-title">Class Not Found</h1>
+        </div>
+        <div class="card-body">
+          <p>Sorry, we couldn't find the class you're looking for. Please check the URL and try again.</p>
+          <p>If you believe this is an error, please contact your teacher.</p>
+        </div>
+      </div>
+      
+      <!-- Student Selection Section -->
+      <div id="student-selection" class="card hidden">
+        <div class="card-header">
+          <h1 class="card-title">Select Your Name</h1>
+        </div>
+        <div class="card-body">
+          <p>Welcome to <span id="class-name-display">your class</span>! Please select your name from the list below.</p>
+          <div id="students-grid" class="students-grid">
+            <!-- Student buttons will be dynamically added here -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Passcode Entry Section -->
+      <div id="passcode-entry" class="card text-center hidden">
+        <div class="card-header">
+          <h1 class="card-title">Enter Passcode</h1>
+        </div>
+        <div class="card-body">
+          <p>Hi <span id="selected-student-name">Student</span>! Please enter your passcode to continue.</p>
+          <p id="first-time-message" class="hidden">This is your first time logging in. The digit you enter will be your passcode.</p>
+          
+          <div class="passcode-container">
+            <input type="password" id="passcode-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="off">
+          </div>
+          
+          <button id="submit-passcode" class="btn btn-lg">Submit</button>
+          <p id="passcode-error" class="text-error hidden">Incorrect passcode. Please try again.</p>
+        </div>
+      </div>
+      
+      <!-- Student Dashboard Section -->
+      <div id="student-dashboard" class="card hidden">
+        <div class="card-header">
+          <h1 class="card-title">Welcome, <span id="dashboard-student-name">Student</span>!</h1>
+          <button id="logout-button" class="btn btn-sm btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+        <div class="card-body">
+          <p>Welcome to your learning portal. Here you can access your vocabulary lists and learning materials.</p>
+          
+          <div class="dashboard-grid">
+            <div class="dashboard-card">
+              <div class="dashboard-card-header">
+                <div class="dashboard-card-title">Vocabulary Lists</div>
+              </div>
+              <div class="dashboard-card-count" id="total-vocabulary-lists">0</div>
+              <div class="dashboard-card-footer">
+                <a href="#" class="btn btn-secondary" id="view-vocabulary-lists">View Lists</a>
+              </div>
+            </div>
+            
+            <!-- New Leaderboard Card -->
+            <div class="dashboard-card leaderboard-card">
+              <div class="dashboard-card-header">
+                <div class="dashboard-card-title">Leaderboard</div>
+              </div>
+              <div class="dashboard-card-count" id="total-students-leaderboard">0</div>
+              <div class="dashboard-card-footer">
+                <a href="#" class="btn btn-secondary" id="view-leaderboard">View Leaderboard</a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Vocabulary Lists Section -->
+          <div id="vocabulary-lists-section" class="hidden">
+            <h2>Vocabulary Lists</h2>
+            <div id="vocabulary-lists-container">
+              <!-- Vocabulary lists will be dynamically added here -->
+            </div>
+            <div class="text-center hidden" id="no-vocabulary-lists-message">
+              <p>No vocabulary lists available for your class yet.</p>
+            </div>
+          </div>
+          
+          <!-- Leaderboard Section -->
+          <div id="leaderboard-section" class="hidden">
+            <h2>Class Leaderboard</h2>
+            <div id="leaderboard-container">
+              <!-- Leaderboard will be dynamically added here -->
+            </div>
+            <div class="text-center hidden" id="no-leaderboard-message">
+              <p>No activity data available for the leaderboard yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Student Learning Portal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    console.log('Page loaded, about to load scripts');
+    
+    // Global error handler
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.error('Global error caught:', message);
+      console.error('Source:', source);
+      console.error('Line:', lineno, 'Column:', colno);
+      console.error('Error object:', error);
+      alert('JavaScript error: ' + message + ' at line ' + lineno);
+      return false;
+    };
+  </script>
+  <script src="../js/config.js"></script>
+  <script src="../js/spelling-activities.js"></script>
+  <script src="../js/bubble-pop-activity.js"></script>
+  <script src="../js/student.js"></script>
+</body>
+</html> 

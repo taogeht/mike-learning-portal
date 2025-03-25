@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal - Student Learning Portal</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">Student Portal</div>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="#" id="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="alert-container"></div>
+      
+      <div class="card mb-3">
+        <div class="card-header">
+          <h1 class="card-title" id="class-name">Class Name</h1>
+        </div>
+        <div class="card-body">
+          <p id="class-description">Class description will appear here.</p>
+        </div>
+      </div>
+      
+      <div class="card mb-3">
+        <div class="card-header">
+          <h2 class="card-title">Vocabulary Lists</h2>
+        </div>
+        <div id="vocabulary-lists-container">
+          <!-- Vocabulary lists will be dynamically added here -->
+        </div>
+        <div class="text-center hidden" id="no-vocabulary-lists-message">
+          <p>No vocabulary lists available for this class yet.</p>
+        </div>
+      </div>
+      
+      <!-- Vocabulary Quiz Section (hidden by default) -->
+      <div class="card mb-3 hidden" id="vocabulary-quiz-section">
+        <div class="card-header">
+          <h2 class="card-title" id="quiz-title">Vocabulary Quiz</h2>
+          <button class="btn btn-secondary" id="back-to-lists-btn">Back to Lists</button>
+        </div>
+        <div class="card-body">
+          <div id="quiz-container">
+            <div id="quiz-question" class="mb-2">
+              <h3>What is the meaning of: <span id="quiz-word">Word</span></h3>
+            </div>
+            <div id="quiz-options" class="mb-2">
+              <!-- Quiz options will be dynamically added here -->
+            </div>
+            <div id="quiz-feedback" class="alert hidden mb-2">
+              <!-- Feedback will be shown here -->
+            </div>
+            <div id="quiz-navigation">
+              <button class="btn" id="next-question-btn">Next Question</button>
+              <button class="btn btn-secondary hidden" id="finish-quiz-btn">Finish Quiz</button>
+            </div>
+          </div>
+          <div id="quiz-results" class="hidden">
+            <h3>Quiz Results</h3>
+            <p>You scored <span id="quiz-score">0</span> out of <span id="quiz-total">0</span></p>
+            <button class="btn" id="retry-quiz-btn">Try Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Student Learning Portal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/student.js"></script>
+  <script>
+    // This script will be replaced by the actual class-specific script
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get class slug from URL
+      const pathParts = window.location.pathname.split('/');
+      const classSlug = pathParts[pathParts.length - 1];
+      
+      // If we're at the index page without a class slug, show a message
+      if (window.location.pathname.endsWith('/portal/') || window.location.pathname.endsWith('/portal/index.html')) {
+        document.querySelector('.container').innerHTML = `
+          <div class="card">
+            <div class="card-header">
+              <h1 class="card-title">Student Portal</h1>
+            </div>
+            <div class="card-body">
+              <p>Please enter your class code to access your class portal.</p>
+              <form id="class-code-form" class="mt-3">
+                <div class="form-group">
+                  <label for="class-code">Class Code</label>
+                  <input type="text" id="class-code" name="class-code" required>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn">Enter Class</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('class-code-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const classCode = document.getElementById('class-code').value.trim();
+          if (classCode) {
+            window.location.href = `/portal/${classCode}`;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,709 @@
+/* Student Portal Specific Styles - Kid-Friendly Version */
+
+/* Custom color variables for kid-friendly design */
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #2196F3;
+  --accent-color: #FF9800;
+  --fun-purple: #9C27B0;
+  --fun-pink: #E91E63;
+  --fun-yellow: #FFEB3B;
+  --fun-cyan: #00BCD4;
+  --dark-color: #333;
+  --light-color: #f4f4f4;
+  --danger-color: #f44336;
+  --success-color: #4caf50;
+}
+
+/* Larger, more playful header */
+header {
+  padding: 20px 0 !important;
+  background-color: var(--fun-purple) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+header .logo {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+header nav ul li a {
+  font-size: 1.3rem !important;
+  color: white !important;
+  padding: 10px 15px !important;
+  border-radius: 20px !important;
+  transition: all 0.3s ease !important;
+}
+
+header nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Card styles - larger and more colorful */
+.card {
+  border-radius: 15px !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+  margin-bottom: 30px !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+.card-header {
+  padding: 20px 25px !important;
+  background: linear-gradient(135deg, var(--fun-purple) 0%, var(--fun-pink) 100%) !important;
+  color: white !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 2.2rem !important;
+  font-weight: 700 !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3) !important;
+  margin: 0;
+}
+
+.card-body {
+  padding: 25px !important;
+  font-size: 1.2rem !important;
+}
+
+.card-body p {
+  font-size: 1.3rem !important;
+  margin-bottom: 20px !important;
+}
+
+/* Student selection grid - larger buttons */
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.student-button {
+  background-color: white;
+  border: 3px solid var(--fun-cyan);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--dark-color);
+}
+
+.student-button:hover {
+  background-color: var(--fun-cyan);
+  color: white;
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Passcode entry - larger input */
+.passcode-container {
+  margin: 40px auto;
+  max-width: 150px;
+}
+
+#passcode-input {
+  width: 100%;
+  height: 120px;
+  font-size: 4.5rem;
+  text-align: center;
+  border: 4px solid var(--fun-cyan);
+  border-radius: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#passcode-input:focus {
+  border-color: var(--fun-purple);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(156, 39, 176, 0.3);
+}
+
+/* Larger buttons */
+.btn {
+  padding: 15px 30px !important;
+  font-size: 1.4rem !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.btn-lg {
+  padding: 18px 36px !important;
+  font-size: 1.6rem !important;
+}
+
+/* Dashboard styles */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.dashboard-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  border: 3px solid var(--fun-yellow);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-card-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--fun-purple);
+}
+
+.dashboard-card-count {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 20px 0;
+  color: var(--fun-cyan);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card-footer {
+  margin-top: 20px;
+}
+
+/* Vocabulary list styles */
+#vocabulary-lists-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 30px 0 20px;
+  color: var(--fun-purple);
+  text-align: center;
+}
+
+.vocabulary-list-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 25px;
+  overflow: hidden;
+  border: 3px solid var(--fun-pink);
+  transition: all 0.3s ease;
+}
+
+.vocabulary-list-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.vocabulary-list-card-header {
+  background: linear-gradient(135deg, var(--fun-pink) 0%, var(--fun-purple) 100%);
+  padding: 20px;
+  border-bottom: none;
+}
+
+.vocabulary-list-card-header h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.vocabulary-list-card-body {
+  padding: 20px;
+}
+
+.view-vocabulary-words-btn {
+  width: 100%;
+  padding: 15px !important;
+  font-size: 1.3rem !important;
+  background-color: var(--fun-cyan) !important;
+}
+
+/* Vocabulary activities */
+.vocabulary-activities {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #eee;
+  max-width: 800px;
+}
+
+/* Leaderboard styles */
+.leaderboard-card {
+  border-color: var(--fun-cyan);
+}
+
+.leaderboard-card:hover {
+  border-color: var(--fun-cyan);
+}
+
+.leaderboard-card .dashboard-card-count {
+  color: var(--fun-purple);
+}
+
+#leaderboard-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 30px 0 20px;
+  color: var(--fun-cyan);
+  text-align: center;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.leaderboard-table th {
+  background-color: var(--fun-cyan);
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.leaderboard-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.leaderboard-table tr:hover {
+  background-color: #f0f0f0;
+}
+
+.leaderboard-table .rank {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--fun-purple);
+  text-align: center;
+  width: 60px;
+}
+
+.leaderboard-table .student-name {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.leaderboard-table .score {
+  font-weight: 700;
+  color: var(--fun-cyan);
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.leaderboard-table .top-rank {
+  background-color: rgba(255, 235, 59, 0.2);
+}
+
+.leaderboard-table .top-rank .rank {
+  color: var(--fun-yellow);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.leaderboard-table .current-student {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.leaderboard-table .current-student .student-name {
+  color: var(--success-color);
+}
+
+/* Activity button styles */
+.activity-btn {
+  flex: 1 1 calc(50% - 12px);
+  min-width: 140px;
+  max-width: 220px;
+  margin-bottom: 8px;
+  padding: 15px 15px !important;
+  background-color: var(--fun-purple) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.activity-btn:hover {
+  background-color: var(--fun-pink) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Vocabulary word grid */
+.vocabulary-word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.vocabulary-word-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  border: 3px solid var(--fun-yellow);
+}
+
+.vocabulary-word-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.vocabulary-word-header {
+  background: linear-gradient(135deg, var(--fun-yellow) 0%, var(--accent-color) 100%);
+  padding: 20px;
+  border-bottom: none;
+}
+
+.vocabulary-word-header h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  text-align: center;
+  color: var(--dark-color);
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.vocabulary-word-image {
+  padding: 20px;
+  text-align: center;
+  background-color: white;
+}
+
+.vocabulary-word-image img {
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.vocabulary-word-definition {
+  padding: 20px;
+  border-top: 2px solid #eee;
+  font-size: 1.3rem;
+  cursor: default;
+  user-select: text;
+}
+
+.vocabulary-word-sample-sentence {
+  padding: 20px;
+  border-top: 2px solid #eee;
+  font-style: italic;
+  color: #555;
+  text-align: center;
+  font-size: 1.3rem;
+  cursor: default;
+  user-select: text;
+}
+
+.vocabulary-word-chinese {
+  padding: 20px;
+  border-top: 2px solid #eee;
+  font-size: 1.6rem;
+  text-align: center;
+  cursor: default;
+  user-select: text;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 25px;
+  border-radius: 15px !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+  border: none !important;
+  width: 90% !important;
+  max-width: 900px !important;
+  max-height: 85vh !important;
+  overflow-y: auto !important;
+  position: relative;
+}
+
+.modal-content h2 {
+  font-size: 2rem !important;
+  color: var(--fun-purple) !important;
+  margin-bottom: 20px !important;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2.5rem !important;
+  color: var(--fun-purple) !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close:hover {
+  color: var(--fun-pink) !important;
+  transform: scale(1.1);
+}
+
+/* Error messages */
+.text-error {
+  color: var(--danger-color);
+  margin-top: 15px;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .students-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .vocabulary-word-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  .card-title {
+    font-size: 1.8rem !important;
+  }
+  
+  .dashboard-card-count {
+    font-size: 3rem;
+  }
+  
+  .activity-btn {
+    flex: 1 1 calc(50% - 12px);
+    min-width: 130px;
+    font-size: 1.2rem !important;
+    padding: 12px 10px !important;
+  }
+  
+  .modal-content {
+    padding: 15px !important;
+    margin: 10% auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .students-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+  
+  .student-button {
+    padding: 15px;
+    font-size: 1.3rem;
+  }
+  
+  .vocabulary-word-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-title {
+    font-size: 1.6rem !important;
+  }
+  
+  .btn {
+    padding: 12px 24px !important;
+    font-size: 1.2rem !important;
+  }
+  
+  .activity-btn {
+    flex: 1 1 100%;
+    max-width: none;
+    min-width: 0;
+    font-size: 1.1rem !important;
+    padding: 10px 8px !important;
+  }
+  
+  .modal-content h2 {
+    font-size: 1.6rem !important;
+  }
+  
+  .vocabulary-activities {
+    gap: 8px;
+  }
+}
+
+/* Bubble Pop Activity Styles */
+.bubble-pop-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.bubble-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background-color: #e6f7ff;
+  border-radius: 15px;
+  margin: 20px 0;
+  overflow: hidden;
+  border: 3px solid #7dd3fc;
+}
+
+.letter-bubble {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 20px 20px, #7dd3fc, #0ea5e9);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease-in-out;
+  user-select: none;
+  z-index: 1;
+}
+
+.letter-bubble:hover {
+  transform: scale(1.1);
+}
+
+.letter-bubble.popped {
+  animation: pop 0.3s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.word-progress {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.letter-slot {
+  width: 40px;
+  height: 40px;
+  border: 2px dashed #0ea5e9;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #0369a1;
+  background-color: #f0f9ff;
+}
+
+.letter-slot.filled {
+  border: 2px solid #0ea5e9;
+  background-color: #e0f2fe;
+}
+
+/* Feedback message styles */
+.feedback-message {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.feedback-message.success {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.feedback-message.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Logout button */
+#logout-button {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  border: 2px solid white;
+  padding: 8px 15px !important;
+  font-size: 1.1rem !important;
+  transition: all 0.2s ease;
+}
+
+#logout-button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px) !important;
+} 

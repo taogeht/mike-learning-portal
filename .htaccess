@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Redirect all requests that don't point to actual files or directories
+# to the student portal with the slug as a parameter
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ student/index.html [L]
+
+# Prevent direct access to certain directories
+RewriteRule ^js/ - [F,L]
+RewriteRule ^css/ - [F,L]
+
+# Set default index page
+DirectoryIndex index.html 

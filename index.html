@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Learning Portal - A platform for teachers to manage classes and students to access learning materials.">
+  <title>Student Learning Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">Student Learning Portal</div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="#" id="teacher-login-btn">Teacher Portal</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="hero">
+        <h1>Welcome to the Student Learning Portal</h1>
+        <p>A platform for interactive learning and vocabulary building</p>
+      </div>
+      
+      <div class="portal-cards">
+        <div class="portal-card">
+          <h2>Teacher Portal</h2>
+          <p>Create and manage classes, add students, and create vocabulary lists.</p>
+          <button class="btn" id="open-teacher-login">Enter Teacher Portal</button>
+        </div>
+        
+        <div class="portal-card">
+          <h2>Student Portal</h2>
+          <p>Access your class using the link provided by your teacher.</p>
+          <p class="note">Your teacher will provide you with a direct link to your class.</p>
+          <p class="example">Example: www.domain.com/student/index.html?class=math-class-101</p>
+        </div>
+      </div>
+      
+      <div class="features">
+        <h2>Features</h2>
+        
+        <div class="features-grid">
+          <div class="feature">
+            <h3>Class Management</h3>
+            <p>Teachers can create and manage multiple classes with unique URLs.</p>
+          </div>
+          
+          <div class="feature">
+            <h3>Student Management</h3>
+            <p>Add students individually or import them via CSV files.</p>
+          </div>
+          
+          <div class="feature">
+            <h3>Vocabulary Lists</h3>
+            <p>Create vocabulary lists with words, definitions, images, and translations.</p>
+          </div>
+          
+          <div class="feature">
+            <h3>Simple Authentication</h3>
+            <p>Students use a simple one-digit passcode for easy access.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="portal-links">
+        <a href="student/index.html" class="portal-link student-portal">Student Portal</a>
+        <a href="teacher/login.html" class="portal-link teacher-portal">Teacher Portal</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Teacher Login Modal -->
+  <div id="teacher-login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Teacher Login</h2>
+      <div id="login-error" class="alert alert-error hidden"></div>
+      <form id="teacher-login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Student Learning Portal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // DOM Elements
+    const teacherLoginBtn = document.getElementById('teacher-login-btn');
+    const openTeacherLoginBtn = document.getElementById('open-teacher-login');
+    const teacherLoginModal = document.getElementById('teacher-login-modal');
+    const teacherLoginForm = document.getElementById('teacher-login-form');
+    const closeBtn = teacherLoginModal.querySelector('.close');
+    const loginError = document.getElementById('login-error');
+
+    // Show modal when clicking either teacher login button
+    [teacherLoginBtn, openTeacherLoginBtn].forEach(btn => {
+      btn.addEventListener('click', () => {
+        teacherLoginModal.style.display = 'block';
+        loginError.classList.add('hidden');
+        teacherLoginForm.reset();
+      });
+    });
+
+    // Close modal when clicking close button or outside
+    closeBtn.addEventListener('click', () => {
+      teacherLoginModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (event.target === teacherLoginModal) {
+        teacherLoginModal.style.display = 'none';
+      }
+    });
+
+    // Handle login form submission
+    teacherLoginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      
+      try {
+        const { data, error } = await Auth.signIn(email, password);
+        
+        if (error) {
+          loginError.textContent = error.message;
+          loginError.classList.remove('hidden');
+          return;
+        }
+        
+        // Redirect to teacher portal
+        window.location.href = 'teacher/index.html';
+      } catch (error) {
+        loginError.textContent = error.message;
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    // Check if we were redirected here due to no auth
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auth') === 'required') {
+      teacherLoginModal.style.display = 'block';
+      loginError.textContent = 'Please log in to access the teacher portal';
+      loginError.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html> 

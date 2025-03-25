@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Test</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Login Test</h1>
+  
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+  </div>
+  
+  <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" id="password" required>
+  </div>
+  
+  <button id="login-btn">Login</button>
+  <button id="check-session-btn">Check Session</button>
+  <button id="check-teacher-btn">Check Teacher Profile</button>
+  
+  <div id="result">Results will appear here...</div>
+  
+  <script>
+    // Supabase configuration
+    const SUPABASE_URL = 'https://lnhadznrbueitsfmirpd.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuaGFkem5yYnVlaXRzZm1pcnBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2NDIxNzgsImV4cCI6MjA1NzIxODE3OH0.MALZ4YcGbw3_Wl6X5w1xlcpeLung82lj9TYvoxAtUT0';
+    
+    // Initialize Supabase client
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    // DOM elements
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('login-btn');
+    const checkSessionBtn = document.getElementById('check-session-btn');
+    const checkTeacherBtn = document.getElementById('check-teacher-btn');
+    const resultDiv = document.getElementById('result');
+    
+    // Login function
+    loginBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      if (!email || !password) {
+        resultDiv.textContent = 'Please enter both email and password';
+        return;
+      }
+      
+      resultDiv.textContent = 'Logging in...';
+      
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+        
+        if (error) {
+          resultDiv.textContent = `Login Error: ${error.message}`;
+          console.error('Login error:', error);
+          return;
+        }
+        
+        resultDiv.textContent = `Login Successful!\n\nUser ID: ${data.user.id}\n\nFull response: ${JSON.stringify(data, null, 2)}`;
+        console.log('Login successful:', data);
+      } catch (error) {
+        resultDiv.textContent = `Exception: ${error.message}`;
+        console.error('Exception during login:', error);
+      }
+    });
+    
+    // Check session function
+    checkSessionBtn.addEventListener('click', async () => {
+      resultDiv.textContent = 'Checking session...';
+      
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        
+        if (error) {
+          resultDiv.textContent = `Session Error: ${error.message}`;
+          console.error('Session error:', error);
+          return;
+        }
+        
+        if (data && data.session) {
+          resultDiv.textContent = `Active Session Found!\n\nUser ID: ${data.session.user.id}\n\nFull response: ${JSON.stringify(data, null, 2)}`;
+          console.log('Session found:', data);
+        } else {
+          resultDiv.textContent = 'No active session found. Please log in.';
+          console.log('No session found:', data);
+        }
+      } catch (error) {
+        resultDiv.textContent = `Exception: ${error.message}`;
+        console.error('Exception checking session:', error);
+      }
+    });
+    
+    // Check teacher profile function
+    checkTeacherBtn.addEventListener('click', async () => {
+      resultDiv.textContent = 'Checking teacher profile...';
+      
+      try {
+        // First check if we have a session
+        const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+        
+        if (sessionError) {
+          resultDiv.textContent = `Session Error: ${sessionError.message}`;
+          console.error('Session error:', sessionError);
+          return;
+        }
+        
+        if (!sessionData || !sessionData.session) {
+          resultDiv.textContent = 'No active session found. Please log in first.';
+          console.log('No session found:', sessionData);
+          return;
+        }
+        
+        const userId = sessionData.session.user.id;
+        
+        // Now check for teacher profile
+        const { data: teacherData, error: teacherError } = await supabaseClient
+          .from('teachers')
+          .select('*')
+          .eq('id', userId)
+          .single();
+        
+        if (teacherError) {
+          resultDiv.textContent = `Teacher Profile Error: ${teacherError.message}`;
+          console.error('Teacher profile error:', teacherError);
+          return;
+        }
+        
+        if (teacherData) {
+          resultDiv.textContent = `Teacher Profile Found!\n\nName: ${teacherData.name}\nEmail: ${teacherData.email}\n\nFull profile: ${JSON.stringify(teacherData, null, 2)}`;
+          console.log('Teacher profile found:', teacherData);
+        } else {
+          resultDiv.textContent = 'No teacher profile found for this user ID. You may need to create a teacher record in the database.';
+          console.log('No teacher profile found');
+        }
+      } catch (error) {
+        resultDiv.textContent = `Exception: ${error.message}`;
+        console.error('Exception checking teacher profile:', error);
+      }
+    });
+  </script>
+</body>
+</html> 
